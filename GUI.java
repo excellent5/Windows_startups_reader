@@ -56,10 +56,10 @@ public class GUI {
 				int index=jtp.getSelectedIndex();
 				tablemodels[index].getDataVector().clear();
 				switch(index){
-				case 2: 
+				case 3: 
 					new Thread(new getDrivers(tablemodels[index],index)).start();
 					break;
-				case 3:
+				case 2:
 					new Thread(new getServices(tablemodels[index],index)).start();
 					break;
 				}				
@@ -67,7 +67,7 @@ public class GUI {
 		});
 		
 		jf.add(jtp);
-		jf.setSize(600, 600);
+		jf.setSize(800, 600);
 		jf.setVisible(true);
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
