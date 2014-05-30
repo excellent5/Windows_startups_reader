@@ -1,6 +1,7 @@
 package read_test;
 
-import java.awt.FlowLayout;
+import java.awt.BorderLayout;
+import java.awt.FontMetrics;
 import java.util.Vector;
 
 import javax.swing.JFrame;
@@ -10,7 +11,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.metal.MetalTabbedPaneUI;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 public class GUI {
 	public static void main(String[] args) {
@@ -31,8 +34,14 @@ public class GUI {
 		final JTable[] jtables=new JTable[6];
 		for(int i=0;i<6;i++){
 			jpanels[i]=new JPanel();
-			jpanels[i].setLayout(new FlowLayout(FlowLayout.LEFT));
+			jpanels[i].setLayout(new BorderLayout());
 			jtables[i]=new JTable(rows[i],columnNames);
+			jtables[i].setShowGrid(false);
+			TableColumnModel tcm=jtables[i].getColumnModel();
+			tcm.getColumn(0).setPreferredWidth(80);
+			tcm.getColumn(1).setPreferredWidth(200);
+			tcm.getColumn(2).setPreferredWidth(200);
+			tcm.getColumn(3).setPreferredWidth(270);
 			tablemodels[i]=(DefaultTableModel)jtables[i].getModel();
 			jtables[i].setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		}
@@ -41,6 +50,14 @@ public class GUI {
 		
 		for(int i=0;i<6;i++){
 			jtp.addTab(functions[i], jpanels[i]);
+			jtp.setUI(new MetalTabbedPaneUI(){
+				@Override
+				protected int calculateTabWidth(int arg0, int arg1,
+						FontMetrics arg2) {
+					// TODO Auto-generated method stub
+					return super.calculateTabWidth(arg0, arg1, arg2)+43;
+				}
+			});
 		}
 		
 		for(int i=0;i<6;i++){

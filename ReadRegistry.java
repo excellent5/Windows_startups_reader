@@ -1,6 +1,7 @@
 package read_test;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import org.boris.pecoff4j.PE;
 import org.boris.pecoff4j.ResourceDirectory;
@@ -27,11 +28,12 @@ public abstract class ReadRegistry {
 		if(path.contains(".exe")){
 			int index=path.indexOf(".exe");
 			path=path.substring(0, index)+".exe";
-		}
-		
+		}	
+				
 		if(path.charAt(0)=='\\'){
 			start_index=1;
 		}
+		
 		
 		int aim_index=path.indexOf("\\", start_index);
 		String prefix=path.substring(start_index, aim_index).toLowerCase();
@@ -41,8 +43,12 @@ public abstract class ReadRegistry {
 		else if(prefix.contains("system32")){
 			cpath="C:\\Windows\\System32"+path.substring(aim_index, path.length());
 		}
-		else
+		else {
 			cpath=path;
+			if(Pattern.matches("%[a-zA-Z0-9\\s()]*%", cpath)){
+				return "C:\\"+cpath.replaceAll("[^a-zA-Z0-9()\\\\:_\\s.-]", "");	
+			}
+		}
 		return cpath.replaceAll("[^a-zA-Z0-9()\\\\:_\\s.-]", "");
 	}
 	
