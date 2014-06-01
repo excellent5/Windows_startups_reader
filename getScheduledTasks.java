@@ -46,7 +46,6 @@ public class getScheduledTasks extends ReadRegistry implements Runnable{
 		while((word=raf.readShort())!=0){
 			path+=(char)(word>>8);
 		}
-		System.out.println(path);
 		raf.close();
 		return path;
 	}
