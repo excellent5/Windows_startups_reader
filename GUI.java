@@ -1,7 +1,6 @@
 package read_test;
 
 import java.awt.BorderLayout;
-import java.awt.FontMetrics;
 import java.util.Vector;
 
 import javax.swing.JFrame;
@@ -11,7 +10,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.plaf.metal.MetalTabbedPaneUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
@@ -20,26 +18,27 @@ public class GUI {
 		JFrame jf=new JFrame("Autorun");
 		final JTabbedPane jtp=new JTabbedPane();
 		jtp.setTabPlacement(JTabbedPane.TOP);
-		String[] functions={"Logon","Internet Explorer","Services","Drivers","Scheduled Tasks","Known DLLs"};
+		String[] functions={"Logon","Internet Explorer","Services","Drivers","Scheduled Tasks",
+				"BootExecute", "Known DLLs", "Winlogon", "Winsock Providers"};
 		Vector<String> columnNames=new Vector<String>();
 		columnNames.add("Entry");
 		columnNames.add("Description");
 		columnNames.add("Publisher");
 		columnNames.add("ImagePath");
 		
-		final DefaultTableModel tablemodels[]=new DefaultTableModel[6];
+		final DefaultTableModel tablemodels[]=new DefaultTableModel[9];
 		@SuppressWarnings("unchecked")
-		Vector<Vector<String>>[] rows=new Vector[6];
+		Vector<Vector<String>>[] rows=new Vector[9];
 		
-		JPanel[] jpanels=new JPanel[6];
-		final JTable[] jtables=new JTable[6];
-		for(int i=0;i<6;i++){
+		JPanel[] jpanels=new JPanel[9];
+		final JTable[] jtables=new JTable[9];
+		for(int i=0;i<9;i++){
 			jpanels[i]=new JPanel();
 			jpanels[i].setLayout(new BorderLayout());
 			jtables[i]=new JTable(rows[i],columnNames);
 			jtables[i].setShowGrid(false);
 			TableColumnModel tcm=jtables[i].getColumnModel();
-			tcm.getColumn(0).setPreferredWidth(80);
+			tcm.getColumn(0).setPreferredWidth(100);
 			tcm.getColumn(1).setPreferredWidth(200);
 			tcm.getColumn(2).setPreferredWidth(200);
 			tcm.getColumn(3).setPreferredWidth(270);
@@ -47,19 +46,11 @@ public class GUI {
 			jtables[i].setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		}
 		
-		for(int i=0;i<6;i++){
+		for(int i=0;i<9;i++){
 			jtp.addTab(functions[i], jpanels[i]);
-			jtp.setUI(new MetalTabbedPaneUI(){
-				@Override
-				protected int calculateTabWidth(int arg0, int arg1,
-						FontMetrics arg2) {
-					// TODO Auto-generated method stub
-					return super.calculateTabWidth(arg0, arg1, arg2)+43;
-				}
-			});
 		}
 		
-		for(int i=0;i<6;i++){
+		for(int i=0;i<9;i++){
 			jpanels[i].add(new JScrollPane(jtables[i]));
 		}
 		
@@ -88,14 +79,23 @@ public class GUI {
 					new Thread(new getScheduledTasks(tablemodels[4])).start();
 					break;
 				case 5:
-					new Thread(new getKnownDLLs(tablemodels[5])).start();
+					new Thread(new getBootExecute(tablemodels[5])).start();
+					break;
+				case 6:
+					new Thread(new getKnownDLLs(tablemodels[6])).start();
+					break;
+				case 7:
+					new Thread(new getWinlogon(tablemodels[7])).start();
+					break;
+				case 8:
+					new Thread(new getWinsock(tablemodels[8])).start();
 					break;
 				}				
 			}
 		});
 		
 		jf.add(jtp);
-		jf.setSize(800, 600);
+		jf.setSize(850, 600);
 		jf.setVisible(true);
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		

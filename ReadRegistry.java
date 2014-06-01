@@ -71,6 +71,10 @@ public class ReadRegistry {
 	            	infos[0]=table.getString(j).getValue();
 	        }
 	        infos[2]=path;
+	        if(infos[0]==null)
+	        	infos[0]="N/A";
+	        if(infos[1]==null)
+	        	infos[1]="N/A";
 	        return infos;
 		}
 		catch(FileNotFoundException e){

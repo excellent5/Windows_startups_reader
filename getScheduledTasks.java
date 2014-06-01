@@ -33,7 +33,7 @@ public class getScheduledTasks extends ReadRegistry implements Runnable{
 			String[] infos=getInfo(path);
 			row.add(infos[0]);
 			row.add(infos[1]);
-			row.add(path);
+			row.add(infos[2]);
 			tablemodels.addRow(row);
 		}
 	}
