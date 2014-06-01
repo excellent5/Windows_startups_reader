@@ -84,12 +84,5 @@ public class getLogon extends ReadRegistry implements Runnable{
 		tablemodels.fireTableDataChanged();
 	}
 
-	@Override
-	public RegistryKey getRegistryKey() throws NoSuchKeyException,
-			RegistryException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 
 }

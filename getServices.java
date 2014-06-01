@@ -19,7 +19,7 @@ public class getServices extends ReadRegistry implements Runnable{
 		this.tablemodels=tablemodels;
 	}
 	
-	@Override
+	
 	public RegistryKey getRegistryKey() throws NoSuchKeyException, RegistryException {
 		// TODO Auto-generated method stub
 		RegistryKey software = Registry.HKEY_LOCAL_MACHINE.openSubKey("SYSTEM");

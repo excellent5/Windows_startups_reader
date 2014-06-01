@@ -28,6 +28,7 @@ public class GUI {
 		columnNames.add("ImagePath");
 		
 		final DefaultTableModel tablemodels[]=new DefaultTableModel[6];
+		@SuppressWarnings("unchecked")
 		Vector<Vector<String>>[] rows=new Vector[6];
 		
 		JPanel[] jpanels=new JPanel[6];
@@ -45,8 +46,6 @@ public class GUI {
 			tablemodels[i]=(DefaultTableModel)jtables[i].getModel();
 			jtables[i].setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		}
-		
-		//new Thread(new getDrivers(tablemodels[0],0)).start();
 		
 		for(int i=0;i<6;i++){
 			jtp.addTab(functions[i], jpanels[i]);
@@ -76,11 +75,20 @@ public class GUI {
 				case 0:
 					new Thread(new getLogon(tablemodels[0])).start();
 					break;
-				case 3: 
-					new Thread(new getDrivers(tablemodels[3])).start();
+				case 1:
+					new Thread(new getIE_BHO(tablemodels[1])).start();
 					break;
 				case 2:
 					new Thread(new getServices(tablemodels[2])).start();
+					break;
+				case 3: 
+					new Thread(new getDrivers(tablemodels[3])).start();
+					break;
+				case 4:
+					new Thread(new getScheduledTasks(tablemodels[4])).start();
+					break;
+				case 5:
+					new Thread(new getKnownDLLs(tablemodels[5])).start();
 					break;
 				}				
 			}

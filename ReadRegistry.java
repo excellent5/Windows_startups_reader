@@ -15,12 +15,7 @@ import org.boris.pecoff4j.resources.StringTable;
 import org.boris.pecoff4j.resources.VersionInfo;
 import org.boris.pecoff4j.util.ResourceHelper;
 
-import com.ice.jni.registry.NoSuchKeyException;
-import com.ice.jni.registry.RegistryException;
-import com.ice.jni.registry.RegistryKey;
-
-public abstract class ReadRegistry {
-	public abstract RegistryKey getRegistryKey() throws NoSuchKeyException, RegistryException;
+public class ReadRegistry {
 	
 	public String getCanonicalPath(String path){
 		String cpath="";

@@ -7,7 +7,6 @@ import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 
 import com.ice.jni.registry.NoSuchKeyException;
-import com.ice.jni.registry.RegDWordValue;
 import com.ice.jni.registry.Registry;
 import com.ice.jni.registry.RegistryException;
 import com.ice.jni.registry.RegistryKey;
@@ -20,7 +19,7 @@ public class getDrivers extends ReadRegistry implements Runnable{
 		this.tablemodels=tablemodels;
 	}
 	
-	@Override
+	
 	public RegistryKey getRegistryKey() throws NoSuchKeyException, RegistryException {
 		// TODO Auto-generated method stub
 		RegistryKey software = Registry.HKEY_LOCAL_MACHINE.openSubKey("SYSTEM");
