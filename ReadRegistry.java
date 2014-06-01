@@ -1,5 +1,6 @@
 package read_test;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
@@ -55,25 +56,36 @@ public abstract class ReadRegistry {
 		return cpath.replaceAll("[^a-zA-Z0-9()\\\\:_\\s.-]", "");
 	}
 	
-	public String[] getInfo(String path) throws IOException{
-		String[] infos=new String[2];
-		PE pe = PEParser.parse(path);
-        ResourceDirectory rd = pe.getImageData().getResourceTable();
-
-        ResourceEntry[] entries = ResourceHelper.findResources(rd, ResourceType.VERSION_INFO);
-        byte[] data = entries[0].getData();
-        VersionInfo version = ResourceParser.readVersionInfo(data);
-
-        StringFileInfo strings = version.getStringFileInfo();
-        StringTable table = strings.getTable(0);
-        for (int j = 0; j < table.getCount(); j++) {
-            String key = table.getString(j).getKey();
-            if(key.equals("CompanyName"))
-            	infos[1]=table.getString(j).getValue();
-            else if(key.equals("FileDescription"))
-            	infos[0]=table.getString(j).getValue();
-        }
-        return infos;
+	public String[] getInfo(String path){
+		String[] infos=new String[3];
+		try{
+			PE pe = PEParser.parse(path);
+	        ResourceDirectory rd = pe.getImageData().getResourceTable();
+	
+	        ResourceEntry[] entries = ResourceHelper.findResources(rd, ResourceType.VERSION_INFO);
+	        byte[] data = entries[0].getData();
+	        VersionInfo version = ResourceParser.readVersionInfo(data);
+	
+	        StringFileInfo strings = version.getStringFileInfo();
+	        StringTable table = strings.getTable(0);
+	        for (int j = 0; j < table.getCount(); j++) {
+	            String key = table.getString(j).getKey();
+	            if(key.equals("CompanyName"))
+	            	infos[1]=table.getString(j).getValue();
+	            else if(key.equals("FileDescription"))
+	            	infos[0]=table.getString(j).getValue();
+	        }
+	        infos[2]=path;
+	        return infos;
+		}
+		catch(FileNotFoundException e){
+			//e.printStackTrace();
+			return new String[]{"File Not found","File Not found","File Not found: "+path};
+		}
+		catch(IOException | IndexOutOfBoundsException ee){
+			//ee.printStackTrace();
+			return new String[]{"N/A","N/A",path};
+		}
 	}
 	
 }

@@ -7,9 +7,11 @@ import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 
 import com.ice.jni.registry.NoSuchKeyException;
+import com.ice.jni.registry.RegDWordValue;
 import com.ice.jni.registry.Registry;
 import com.ice.jni.registry.RegistryException;
 import com.ice.jni.registry.RegistryKey;
+import com.ice.jni.registry.RegistryValue;
 
 public class getDrivers extends ReadRegistry implements Runnable{
 	DefaultTableModel tablemodels;
@@ -49,15 +51,17 @@ public class getDrivers extends ReadRegistry implements Runnable{
 			RegistryKey current = null;
 			try {
 				current = services.openSubKey(service.nextElement());
-				String path=current.getStringValue("ImagePath");
-				if(path.endsWith(".sys")){
+				RegistryValue start=current.getValue("Start");
+				RegistryValue type=current.getValue("Type");
+				if(start.getByteData()[start.getByteLength()-1]<4 && type.getByteData()[type.getByteLength()-1]==1){
+					String path=current.getStringValue("ImagePath");
 					Vector<String> row=new Vector<String>();
 					row.add(current.getName());
 					path=getCanonicalPath(path);
 					String[] infos=getInfo(path);
 					row.add(infos[0]);
 					row.add(infos[1]);
-					row.add(path);
+					row.add(infos[2]);
 					tablemodels.addRow(row);
 				}				
 			} catch (RegistryException e) {
