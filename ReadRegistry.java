@@ -45,8 +45,11 @@ public abstract class ReadRegistry {
 		}
 		else {
 			cpath=path;
-			if(Pattern.matches("%[a-zA-Z0-9\\s()]*%", cpath)){
-				return "C:\\"+cpath.replaceAll("[^a-zA-Z0-9()\\\\:_\\s.-]", "");	
+			if(Pattern.matches("%[a-zA-Z0-9\\s()]+%.*", cpath)){
+				int first_index=cpath.indexOf("%");
+				int end_index=cpath.lastIndexOf("%");
+				String systempath=System.getenv(cpath.substring(first_index+1, end_index));
+				cpath=systempath+cpath.substring(end_index+1);
 			}
 		}
 		return cpath.replaceAll("[^a-zA-Z0-9()\\\\:_\\s.-]", "");

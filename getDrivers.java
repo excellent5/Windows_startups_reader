@@ -12,11 +12,9 @@ import com.ice.jni.registry.RegistryException;
 import com.ice.jni.registry.RegistryKey;
 
 public class getDrivers extends ReadRegistry implements Runnable{
-	int index=0;
 	DefaultTableModel tablemodels;
 	
-	public getDrivers(DefaultTableModel tablemodels, int index){
-		this.index=index;
+	public getDrivers(DefaultTableModel tablemodels){
 		this.tablemodels=tablemodels;
 	}
 	
@@ -61,7 +59,6 @@ public class getDrivers extends ReadRegistry implements Runnable{
 					row.add(infos[1]);
 					row.add(path);
 					tablemodels.addRow(row);
-					System.out.println(path+"\t"+infos[0]);
 				}				
 			} catch (RegistryException e) {
 				// TODO Auto-generated catch block

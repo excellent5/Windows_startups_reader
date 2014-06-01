@@ -12,11 +12,9 @@ import com.ice.jni.registry.RegistryException;
 import com.ice.jni.registry.RegistryKey;
 
 public class getServices extends ReadRegistry implements Runnable{
-	int index=0;
 	DefaultTableModel tablemodels;
 	
-	public getServices(DefaultTableModel tablemodels, int index){
-		this.index=index;
+	public getServices(DefaultTableModel tablemodels){
 		this.tablemodels=tablemodels;
 	}
 	
@@ -60,15 +58,12 @@ public class getServices extends ReadRegistry implements Runnable{
 				if(!path.endsWith(".sys")){
 					Vector<String> row=new Vector<String>();
 					row.add(current.getName());
-					System.out.println("before "+path+"  Name: "+current.getName());
 					path=getCanonicalPath(path);
-					System.out.println("after "+path+"  Name: "+current.getName());
 					String[] infos=getInfo(path);
 					row.add(infos[0]);
 					row.add(infos[1]);
 					row.add(path);
 					tablemodels.addRow(row);
-					//System.out.println(path+"\t"+infos[0]);
 				}				
 			} catch (RegistryException e) {
 				// TODO Auto-generated catch block
