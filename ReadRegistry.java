@@ -21,11 +21,13 @@ public class ReadRegistry {
 		String cpath="";
 		int start_index=0;
 		
+		//把exe后面的参数给过滤掉
 		if(path.contains(".exe")){
 			int index=path.indexOf(".exe");
 			path=path.substring(0, index)+".exe";
 		}	
-				
+		
+		//把路径开头的\给过滤掉
 		if(path.charAt(0)=='\\'){
 			start_index=1;
 		}
@@ -33,6 +35,8 @@ public class ReadRegistry {
 		
 		int aim_index=path.indexOf("\\", start_index);
 		String prefix=path.substring(start_index, aim_index).toLowerCase();
+		
+		//将systemroot和system32转为完整路径，因为有的路径直接就是system32/... 没有%%括起来
 		if(prefix.contains("systemroot")||prefix.contains("windir")){
 			cpath="C:\\Windows"+path.substring(aim_index, path.length());		
 		}
@@ -41,6 +45,7 @@ public class ReadRegistry {
 		}
 		else {
 			cpath=path;
+			//将%%之间的内容取出找系统变量替换
 			if(Pattern.matches("%[a-zA-Z0-9\\s()]+%.*", cpath)){
 				int first_index=cpath.indexOf("%");
 				int end_index=cpath.lastIndexOf("%");
@@ -48,6 +53,7 @@ public class ReadRegistry {
 				cpath=systempath+cpath.substring(end_index+1);
 			}
 		}
+		//将其他字符比如" ,之类的过滤掉
 		return cpath.replaceAll("[^a-zA-Z0-9()\\\\:_\\s.-]", "");
 	}
 	
