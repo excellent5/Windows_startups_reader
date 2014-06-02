@@ -25,6 +25,8 @@ public class getKnownDLLs extends ReadRegistry implements Runnable{
 		while(valueNames.hasMoreElements()){
 			String key=valueNames.nextElement();
 			String path=rk.getStringValue(key);
+			if(path.contains("\\"))
+				continue;
 			Vector<String> row=new Vector<String>();
 			row.add(key);
 			String[] infos=getInfo("C:\\Windows\\System32\\"+path);

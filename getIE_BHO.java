@@ -18,39 +18,46 @@ public class getIE_BHO extends ReadRegistry implements Runnable{
 		this.tablemodels=tablemodels;
 	}
 	
-	public void getBHO(RegistryKey rk) throws RegistryException{
+	public void getBHO(RegistryKey rk, boolean is32) throws RegistryException{
 		@SuppressWarnings("unchecked")
 		Enumeration<String> keys=rk.keyElements();
 		while(keys.hasMoreElements()){
 			String key=keys.nextElement();
-			findCLSID(key);
+			findCLSID(key, is32);
 		}
 	}
 	
-	public void getIE(RegistryKey rk) throws RegistryException{
+	public void getIE(RegistryKey rk, boolean is32) throws RegistryException{
 		@SuppressWarnings("unchecked")
 		Enumeration<String> valueNames=rk.valueElements();
 		while(valueNames.hasMoreElements()){
 			String valueName=valueNames.nextElement();
 			if(!valueName.equals("")){
-				findCLSID(valueName);
+				findCLSID(valueName, is32);
 			}
 		}
 	}
 	
-	public void getExtension(RegistryKey rk) throws RegistryException{
+	public void getExtension(RegistryKey rk, boolean is32) throws RegistryException{
 		@SuppressWarnings("unchecked")
 		Enumeration<String> keys=rk.keyElements();
 		while(keys.hasMoreElements()){
 			RegistryKey subkey=rk.openSubKey(keys.nextElement());
-			findCLSID(subkey.getStringValue("CLSID"));
+			findCLSID(subkey.getStringValue("CLSID"), is32);
 		}
 	}
 	
-	public void findCLSID(String key) {
+	public void findCLSID(String key, boolean is32) {
 		try{
-			RegistryKey rk=Registry.HKEY_LOCAL_MACHINE.openSubKey("SOFTWARE").openSubKey("Classes")
+			RegistryKey rk=null;
+			if(is32){
+				rk=Registry.HKEY_LOCAL_MACHINE.openSubKey("SOFTWARE").openSubKey("Classes")
 					.openSubKey("CLSID").openSubKey(key);
+			}
+			else{
+				rk=Registry.HKEY_LOCAL_MACHINE.openSubKey("SOFTWARE").openSubKey("Wow6432Node").openSubKey("Classes")
+						.openSubKey("CLSID").openSubKey(key);
+			}
 			Vector<String> row=new Vector<String>();
 			row.add(decode(rk.getStringValue("")));
 			String path=rk.openSubKey("InprocServer32").getStringValue("");
@@ -61,7 +68,7 @@ public class getIE_BHO extends ReadRegistry implements Runnable{
 			tablemodels.addRow(row);
 		}
 		catch(RegistryException e){
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 	
@@ -85,22 +92,22 @@ public class getIE_BHO extends ReadRegistry implements Runnable{
 		// TODO Auto-generated method stub
 		try {
 			getBHO(Registry.HKEY_LOCAL_MACHINE.openSubKey("Software").openSubKey("Microsoft").openSubKey("Windows")
-					.openSubKey("CurrentVersion").openSubKey("Explorer").openSubKey("Browser Helper Objects"));
+					.openSubKey("CurrentVersion").openSubKey("Explorer").openSubKey("Browser Helper Objects"), true);
 			
 			getBHO(Registry.HKEY_LOCAL_MACHINE.openSubKey("Software").openSubKey("Wow6432Node").openSubKey("Microsoft")
-					.openSubKey("Windows").openSubKey("CurrentVersion").openSubKey("Explorer").openSubKey("Browser Helper Objects"));
+					.openSubKey("Windows").openSubKey("CurrentVersion").openSubKey("Explorer").openSubKey("Browser Helper Objects"), false);
 			
 			getIE(Registry.HKEY_CURRENT_USER.openSubKey("Software").openSubKey("Microsoft").openSubKey("Internet Explorer")
-					.openSubKey("UrlSearchHooks"));
+					.openSubKey("UrlSearchHooks"), true);
 			
 			getIE(Registry.HKEY_LOCAL_MACHINE.openSubKey("Software").openSubKey("Wow6432Node").openSubKey("Microsoft")
-					.openSubKey("Internet Explorer").openSubKey("Toolbar"));
+					.openSubKey("Internet Explorer").openSubKey("Toolbar"), false);
 			
 			getExtension(Registry.HKEY_LOCAL_MACHINE.openSubKey("Software").openSubKey("Microsoft").openSubKey("Internet Explorer")
-					.openSubKey("Extensions"));
+					.openSubKey("Extensions"), true);
 			
 			getExtension(Registry.HKEY_LOCAL_MACHINE.openSubKey("Software").openSubKey("Wow6432Node").openSubKey("Microsoft")
-					.openSubKey("Internet Explorer").openSubKey("Extensions"));
+					.openSubKey("Internet Explorer").openSubKey("Extensions"), false);
 			
 		} catch (RegistryException e) {
 			// TODO Auto-generated catch block
