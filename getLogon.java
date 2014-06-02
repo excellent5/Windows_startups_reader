@@ -20,17 +20,36 @@ public class getLogon extends ReadRegistry implements Runnable{
 	}
 	
 	public void ReadWinlogon(String name) throws NoSuchKeyException, RegistryException, IOException{
-		for(String systempath:System.getenv("path").split(";")){
-			String path=systempath+"\\"+name;
-			if(new File(path).exists()){
-				Vector<String> row=new Vector<String>();
-				row.add(name);
-				path=getCanonicalPath(path);
-				String[] infos=getInfo(path);
-				row.add(infos[0]);
-				row.add(infos[1]);
-				row.add(infos[2]);
-				tablemodels.addRow(row);
+		String path="";
+		if(name.contains("\\"))
+			path=getCanonicalPath(name);
+		if(new File(path).exists()){
+			Vector<String> row=new Vector<String>();
+			row.add(name);
+			path=getCanonicalPath(path);
+			String[] infos=getInfo(path);
+			row.add(infos[0]);
+			row.add(infos[1]);
+			row.add(infos[2]);
+			tablemodels.addRow(row);
+		}
+		
+		else{
+			for(String systempath:System.getenv("path").split(";")){
+				if(!name.endsWith(".exe")){
+					name+=".exe";
+				}
+				path=systempath+"\\"+name;
+				if(new File(path).exists()){
+					Vector<String> row=new Vector<String>();
+					row.add(name);
+					path=getCanonicalPath(path);
+					String[] infos=getInfo(path);
+					row.add(infos[0]);
+					row.add(infos[1]);
+					row.add(infos[2]);
+					tablemodels.addRow(row);
+				}
 			}
 		}
 	}
@@ -80,7 +99,9 @@ public class getLogon extends ReadRegistry implements Runnable{
 				if(f.getName().endsWith(".lnk")){
 					Vector<String> row=new Vector<String>();
 					row.add(f.getName());
-					String path=new ParseLinkFile(f).getRealFilename().replace("\\\\ZY-PC", "C:");
+					String path=new ParseLinkFile(f).getRealFilename();
+					int index=path.indexOf("\\Users");
+					path=System.getenv("systemdrive")+path.substring(index);
 					String[] infos=getInfo(path);
 					row.add(infos[0]);
 					row.add(infos[1]);

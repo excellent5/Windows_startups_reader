@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 public class GUI {
-	public static void main(String[] args) {
+	public void init() {
 		JFrame jf=new JFrame("Autorun");
 		final JTabbedPane jtp=new JTabbedPane();
 		jtp.setTabPlacement(JTabbedPane.TOP);

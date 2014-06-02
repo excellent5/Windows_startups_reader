@@ -93,26 +93,51 @@ public class getIE_BHO extends ReadRegistry implements Runnable{
 		try {
 			getBHO(Registry.HKEY_LOCAL_MACHINE.openSubKey("Software").openSubKey("Microsoft").openSubKey("Windows")
 					.openSubKey("CurrentVersion").openSubKey("Explorer").openSubKey("Browser Helper Objects"), true);
-			
-			getBHO(Registry.HKEY_LOCAL_MACHINE.openSubKey("Software").openSubKey("Wow6432Node").openSubKey("Microsoft")
-					.openSubKey("Windows").openSubKey("CurrentVersion").openSubKey("Explorer").openSubKey("Browser Helper Objects"), false);
-			
-			getIE(Registry.HKEY_CURRENT_USER.openSubKey("Software").openSubKey("Microsoft").openSubKey("Internet Explorer")
-					.openSubKey("UrlSearchHooks"), true);
-			
-			getIE(Registry.HKEY_LOCAL_MACHINE.openSubKey("Software").openSubKey("Wow6432Node").openSubKey("Microsoft")
-					.openSubKey("Internet Explorer").openSubKey("Toolbar"), false);
-			
-			getExtension(Registry.HKEY_LOCAL_MACHINE.openSubKey("Software").openSubKey("Microsoft").openSubKey("Internet Explorer")
-					.openSubKey("Extensions"), true);
-			
-			getExtension(Registry.HKEY_LOCAL_MACHINE.openSubKey("Software").openSubKey("Wow6432Node").openSubKey("Microsoft")
-					.openSubKey("Internet Explorer").openSubKey("Extensions"), false);
-			
 		} catch (RegistryException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		try {
+			getBHO(Registry.HKEY_LOCAL_MACHINE.openSubKey("Software").openSubKey("Wow6432Node").openSubKey("Microsoft")
+					.openSubKey("Windows").openSubKey("CurrentVersion").openSubKey("Explorer").openSubKey("Browser Helper Objects"), false);
+		} catch (RegistryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			getIE(Registry.HKEY_CURRENT_USER.openSubKey("Software").openSubKey("Microsoft").openSubKey("Internet Explorer")
+					.openSubKey("UrlSearchHooks"), true);
+		} catch (RegistryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			getIE(Registry.HKEY_LOCAL_MACHINE.openSubKey("Software").openSubKey("Wow6432Node").openSubKey("Microsoft")
+					.openSubKey("Internet Explorer").openSubKey("Toolbar"), false);
+		} catch (RegistryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			getExtension(Registry.HKEY_LOCAL_MACHINE.openSubKey("Software").openSubKey("Microsoft").openSubKey("Internet Explorer")
+					.openSubKey("Extensions"), true);
+		} catch (RegistryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			getExtension(Registry.HKEY_LOCAL_MACHINE.openSubKey("Software").openSubKey("Wow6432Node").openSubKey("Microsoft")
+					.openSubKey("Internet Explorer").openSubKey("Extensions"), false);
+		} catch (RegistryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
 		tablemodels.fireTableDataChanged();
 	}
 	

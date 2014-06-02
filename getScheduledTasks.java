@@ -1,11 +1,13 @@
 package read_test;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class getScheduledTasks extends ReadRegistry implements Runnable{
@@ -38,15 +40,29 @@ public class getScheduledTasks extends ReadRegistry implements Runnable{
 		}
 	}
 	
-	public String ParseScheduledTasks(File f) throws IOException{
-		RandomAccessFile raf=new RandomAccessFile(f, "r");
-		raf.seek(72);
+	public String ParseScheduledTasks(File f){
+		RandomAccessFile raf=null;
 		String path="";
-		short word=0;
-		while((word=raf.readShort())!=0){
-			path+=(char)(word>>8);
+		try{
+			raf=new RandomAccessFile(f, "r");
 		}
-		raf.close();
+		catch(FileNotFoundException e){
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Tasks目录拒绝访问，请用管理员权限打开软件查看"
+					, "拒绝访问", JOptionPane.ERROR_MESSAGE);
+		}
+		try {
+			raf.seek(72);
+			short word=0;
+			while((word=raf.readShort())!=0){
+				path+=(char)(word>>8);
+			}
+			raf.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			path="can't get path";
+		}
 		return path;
 	}
 	
