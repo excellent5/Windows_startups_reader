@@ -1,5 +1,6 @@
 package read_test;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Enumeration;
 import java.util.Vector;
 
@@ -48,9 +49,10 @@ public class getIE_BHO extends ReadRegistry implements Runnable{
 	
 	public void findCLSID(String key) {
 		try{
-			RegistryKey rk=Registry.HKEY_CLASSES_ROOT.openSubKey("CLSID").openSubKey(key);
+			RegistryKey rk=Registry.HKEY_LOCAL_MACHINE.openSubKey("SOFTWARE").openSubKey("Classes")
+					.openSubKey("CLSID").openSubKey(key);
 			Vector<String> row=new Vector<String>();
-			row.add(rk.getStringValue(""));
+			row.add(decode(rk.getStringValue("")));
 			String path=rk.openSubKey("InprocServer32").getStringValue("");
 			String[] infos=getInfo(path);
 			row.add(infos[0]);
@@ -62,6 +64,21 @@ public class getIE_BHO extends ReadRegistry implements Runnable{
 			e.printStackTrace();
 		}
 	}
+	
+	public static String decode(String str) {
+        String result = null;
+        char[] charbuf = str.toCharArray();
+        byte[] bytebuf = new byte[charbuf.length];
+        for(int i=0;i<charbuf.length;i++){
+            bytebuf[i] = (byte)charbuf[i];
+        }
+        try {
+            result = new String(bytebuf,"GBK");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
 	@Override
 	public void run() {
