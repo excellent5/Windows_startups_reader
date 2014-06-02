@@ -17,7 +17,7 @@ public class getBootExecute extends ReadRegistry implements Runnable {
 	
 	public void ReadBootExecute(RegistryKey rk) throws RegistryException{
 		String value=rk.getStringValue("BootExecute");
-		String path="C:\\Windows\\System32\\"+value.split(" ")[1]+".exe";
+		String path=System.getenv("systemroot")+"\\system32\\"+value.split(" ")[1]+".exe";
 		Vector<String> row=new Vector<String>();
 		row.add(value);
 		String[] infos=getInfo(path);

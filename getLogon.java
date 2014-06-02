@@ -75,9 +75,21 @@ public class getLogon extends ReadRegistry implements Runnable{
 			ReadRun(Registry.HKEY_CURRENT_USER.openSubKey("Software").openSubKey("Microsoft").openSubKey("Windows")
 					.openSubKey("CurrentVersion").openSubKey("Run"));
 			
-			//C:\Users\zy\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
+			File dir=new File(System.getenv("USERPROFILE")+"\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup");
+			for(File f:dir.listFiles()){
+				if(f.getName().endsWith(".lnk")){
+					Vector<String> row=new Vector<String>();
+					row.add(f.getName());
+					String path=new ParseLinkFile(f).getRealFilename().replace("\\\\ZY-PC", "C:");
+					String[] infos=getInfo(path);
+					row.add(infos[0]);
+					row.add(infos[1]);
+					row.add(infos[2]);
+					tablemodels.addRow(row);
+				}
+			}
 			
-		} catch (RegistryException | IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
