@@ -75,6 +75,28 @@ public class getWinsock extends ReadRegistry implements Runnable {
 					return pn;	
 			}
 		}
+
+		else if(words[0].contains("mswsock.dll")){
+			switch(Integer.parseInt(words[1])){
+				case -60100:
+					return "MSAFD Tcpip [TCP/IP]";
+				case -60101: 
+					return "MSAFD Tcpip [UDP/IP]";
+				case -60102: 
+					return "MSAFD Tcpip [RAW/IP]";
+				case -60103: 
+					return "Tcpip";
+				case -60200:
+					return "MSAFD Tcpip [TCP/IPv6]";
+				case -60201: 
+					return "MSAFD Tcpip [UDP/IPv6]";
+				case -60202: 
+					return "MSAFD Tcpip [RAW/IPv6]";
+				default:
+					return pn;	
+			}
+		}
+		
 		return pn;
 	}
 	
