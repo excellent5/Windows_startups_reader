@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
@@ -15,6 +17,14 @@ import javax.swing.table.TableColumnModel;
 
 public class GUI {
 	public void init() {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		JFrame jf=new JFrame("Autorun");
 		final JTabbedPane jtp=new JTabbedPane();
 		jtp.setTabPlacement(JTabbedPane.TOP);
@@ -95,7 +105,7 @@ public class GUI {
 		});
 		
 		jf.add(jtp);
-		jf.setSize(850, 600);
+		jf.setSize(800, 600);
 		jf.setVisible(true);
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
