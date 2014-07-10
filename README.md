@@ -1,12 +1,12 @@
-# AutoRun
-Read the Windows start ups like AutoRun.exe
+# Startups_reader
+Read the Windows start ups
 
 ## Function
 Read the Windows logon, IE BHO, Services, Drivers, Scheduled Tasks, Winsock
 
 List their file name, file path, file description
 ## Environment
-Only for Windows x64 with JRE installed (successfully run on the Win7 and Win8.1)
+Only for Windows x64 with JRE7 or above installed (successfully run on the Win7 and Win8.1)
 
 ## Open Source Library Used
 - [com.ice.jni.registry](http://ganoro.blogspot.com/2011/05/windows-registry-api-for-windows-plus.html)
